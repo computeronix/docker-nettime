@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/windows:20H2-KB4598242 AS build-env
+ENV DIR="C:\\temp"
+ENV TIMESYNCSRC="http://timesynctool.com/NetTimeSetup-320a3.exe"
+ENV TIMESYNCFIL="${DIR}\\timesynctool.exe"
+WORKDIR "${DIR}"
+
+ADD "${TIMESYNCSRC}" "${TIMESYNCFIL}"
+RUN ["powershell", "-command", "C:\\temp\\timesynctool.exe", "/verysilent"]
+
+RUN ["powershell", "Remove-Item", "-Path", "C:\\temp\\timesynctool.exe", "-Force"]
